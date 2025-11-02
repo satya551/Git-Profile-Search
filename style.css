@@ -149,6 +149,14 @@ input::placeholder{
     margin: none;
 
 }
+.zero-repo-message{
+    color: rgb(17, 167, 4);
+    margin-left: 230px;
+    font-size: 20px;
+    position: relative;
+    bottom: 25px;
+    
+}
 .result div{
     display: flex;
     flex-direction: row;

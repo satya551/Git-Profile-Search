@@ -79,7 +79,11 @@ search.addEventListener("click",()=>{
                     'Accept':'application/vnd.github+json',
                 }
             })
-            .then(repoListURLresponse=>repoListURLresponse.json())
+            .then(repoListURLresponse=>{
+                if(!repoListURLresponse.ok){
+                    throw new Error("uanble to fetch repostories");
+                }
+                return repoListURLresponse.json()})
             .then(repoarray=>{
                   console.log(repoarray);
                   reposlength=repoarray.length; // finding the length that how much repos are there 
@@ -113,6 +117,15 @@ search.addEventListener("click",()=>{
                             </div>
                             <div class="repo-container"><h1>Repostories:-></h1></div>
                         ` ;
+                        if(reposlength===0){
+                           let zeroRepoMessage=document.createElement("div");
+                           zeroRepoMessage.classList.add("zero-repo-message");
+                            zeroRepoMessage.innerHTML=`
+                               <p>Have no repo !!!<p>    
+                            `;
+                            result.appendChild(zeroRepoMessage);
+                            return;
+                       }
                          let repoContainer=document.querySelector(".repo-container");
                         repoarray.forEach(repo => 
                         {
