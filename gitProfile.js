@@ -40,14 +40,18 @@ toggle.addEventListener("click",(evt)=>{
 let username;
 let search=document.querySelector("#search-button");
 search.addEventListener("click",()=>{
-    let seeAllRepoButton=
+    
     username=document.querySelector(".search-value").value; 
     console.log(username);
     // Using Fetch API instead of Octokit
    
     // serching github profile using username
     async function getData(username){       
+       //handling if no user found
 
+    try{
+
+       
         await fetch(`https://api.github.com/users/${username}`, {
          method: 'GET',
          headers: {
@@ -55,7 +59,11 @@ search.addEventListener("click",()=>{
             'X-GitHub-Api-Version': '2022-11-28'
          }
         })
-        .then(response=>response.json())
+        .then(response=>{
+            if(!response.ok){
+                throw new Error(`We not found result for ${username}` )
+            }
+           return response.json()})
         .then(async data=>{
             
           
@@ -120,7 +128,7 @@ search.addEventListener("click",()=>{
                               repoDiv.innerHTML=`
 
                                   <div>
-                                       <a href="${repo.html_url}">${repo.name}</a>
+                                       <a href="${repo.html_url}" target="_blank">${repo.name}</a>
                                        <p class="last-update">Last Updated: ${new Date(repo.updated_at).toLocaleDateString()}</p>
                                         
                                   </div>
@@ -141,7 +149,11 @@ search.addEventListener("click",()=>{
             })
 
         })
-        .catch(error=>console.log(error))
+        .catch(error=>{result.innerHTML=`<p>!Error:${error.message}</p>`;})
+    }
+    catch(error){
+        console.log(error.message);
+    }
     }
     getData(username);
    
